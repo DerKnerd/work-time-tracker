@@ -14,7 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using FirstFloor.ModernUI.Windows.Controls;
 
-namespace work_time_tracker {
+namespace Work.Time.Tracker {
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>

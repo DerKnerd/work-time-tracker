@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace work_time_tracker {
+namespace Work.Time.Tracker {
     /// <summary>
     /// Interaktionslogik für "App.xaml"
     /// </summary>

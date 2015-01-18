@@ -11,7 +11,7 @@ using System.ComponentModel;
 using FirstFloor.ModernUI;
 using System.Windows.Threading;
 
-namespace work_time_tracker {
+namespace Work.Time.Tracker {
 
     [Serializable]
     public abstract class NotifyPropertyChanged : INotifyPropertyChanged {
