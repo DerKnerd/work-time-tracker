@@ -5,7 +5,7 @@
 		xmlns:local="clr-namespace:Work.Time.Tracker"
 		xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
 		xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" x:Class="Work.Time.Tracker.MainWindow"
-		Title="Work Time Tracker" Height="600" Width="800" Style="{DynamicResource BlankWindow}">
+		Title="Work Time Tracker" Height="600" Width="800" Style="{DynamicResource BlankWindow}" Icon="icon.png">
 	<mui:ModernWindow.DataContext>
 		<local:MainWindowViewModel/>
 	</mui:ModernWindow.DataContext>
