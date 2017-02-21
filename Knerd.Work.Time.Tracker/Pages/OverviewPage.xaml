@@ -1,0 +1,24 @@
+﻿<mt:MtPage
+    x:Class="Knerd.Work.Time.Tracker.Pages.OverviewPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Knerd.Work.Time.Tracker.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mt="using:MyToolkit.Paging"
+    xmlns:vm="using:Knerd.Work.Time.Tracker.ViewModels"
+    xmlns:helpers="using:Knerd.Work.Time.Tracker.Helpers"
+    mc:Ignorable="d">
+    <mt:MtPage.DataContext>
+        <vm:OverviewViewModel />
+    </mt:MtPage.DataContext>
+    <mt:MtPage.BottomAppBar>
+        <CommandBar>
+            <AppBarButton Icon="FourBars" x:Uid="Reporting"></AppBarButton>
+            <AppBarButton Icon="Add" x:Uid="AddWorkTimeEntry" Command="{Binding AddNewWorkItemEntry}"></AppBarButton>
+        </CommandBar>
+    </mt:MtPage.BottomAppBar>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <CalendarView VerticalAlignment="Stretch" Margin="0" HorizontalAlignment="Stretch" SelectionMode="Single" FirstDayOfWeek="Monday" CalendarViewDayItemChanging="CalendarView_CalendarViewDayItemChanging" SelectedDatesChanged="CalendarView_SelectedDatesChanged"></CalendarView>
+    </Grid>
+</mt:MtPage>
