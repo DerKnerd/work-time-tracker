@@ -1,7 +1,46 @@
 ﻿using MyToolkit.Model;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Knerd.Work.Time.Tracker.Models {
+
+    public class GroupedWorkItemEntryModel : ObservableObject {
+
+        public static IEnumerable<GroupedWorkItemEntryModel> GroupItems(IEnumerable<WorkItemEntryModel> items) {
+            var groupedByCustomer = items.GroupBy(k => k.Call);
+            foreach (var item in groupedByCustomer) {
+                var workedTime = item.First().WorkedTime;
+                foreach (var timeItem in item.Skip(1)) {
+                    workedTime += timeItem.WorkedTime;
+                }
+                yield return new GroupedWorkItemEntryModel { CustomerCall = item.First().Customer + Environment.NewLine + item.Key, WorkedTime = workedTime.TotalHours };
+            }
+        }
+        private double workedTime;
+
+        public double WorkedTime {
+            get { return workedTime; }
+            set {
+                if (workedTime != value) {
+                    workedTime = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        private string customerCall;
+
+        public string CustomerCall {
+            get { return customerCall; }
+            set {
+                if (customerCall != value) {
+                    customerCall = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    }
 
     public class WorkItemEntryModel : ObservableObject {
 

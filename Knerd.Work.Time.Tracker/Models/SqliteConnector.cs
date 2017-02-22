@@ -16,7 +16,7 @@ namespace Knerd.Work.Time.Tracker.Models {
             var parameters = new List<SqliteParameter> {
                 new SqliteParameter("@beginTime", model.BeginTime),
                 new SqliteParameter("@endTime", model.EndTime),
-                new SqliteParameter("@date", model.Date),
+                new SqliteParameter("@date", model.Date.Date),
                 new SqliteParameter("@call", model.Call),
                 new SqliteParameter("@customer", model.Customer),
                 new SqliteParameter("@workDone", model.WorkDone)
@@ -29,7 +29,8 @@ namespace Knerd.Work.Time.Tracker.Models {
             var items = new List<WorkItemEntryModel>();
             using (var connection = await OpenConnectionAsync()) {
                 await connection.OpenAsync();
-                using (var cmd = new SqliteCommand($"SELECT BeginTime, EndTime, Date, Call, Customer, WorkDone FROM {WorkItemTable} ORDER BY Date DESC", connection)) {
+                using (var cmd = new SqliteCommand($"SELECT BeginTime, EndTime, Date, Call, Customer, WorkDone FROM {WorkItemTable} WHERE Date = @date ORDER BY Date DESC", connection)) {
+                    cmd.Parameters.AddWithValue("@date", date.Date);
                     var reader = await cmd.ExecuteReaderAsync();
                     while (await reader.ReadAsync()) {
                         items.Add(new WorkItemEntryModel {

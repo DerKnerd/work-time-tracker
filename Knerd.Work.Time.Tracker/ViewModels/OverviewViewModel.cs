@@ -18,6 +18,8 @@ namespace Knerd.Work.Time.Tracker.ViewModels {
                 await ReloadWorkItems();
             });
             WorkItems = new ObservableCollection<Models.WorkItemEntryModel>();
+            GroupedWorkItems = new ObservableCollection<Models.GroupedWorkItemEntryModel>();
+            SelectedDate = DateTime.Now;
         }
 
         protected override async void RaisePropertyChanged(PropertyChangedEventArgs args) {
@@ -28,9 +30,27 @@ namespace Knerd.Work.Time.Tracker.ViewModels {
         }
 
         private async Task ReloadWorkItems() {
+            var items = await new SqliteConnector().GetWorkItems(SelectedDate.Value);
             WorkItems.Clear();
-            foreach (var item in await new SqliteConnector().GetWorkItems(SelectedDate.Value)) {
+            foreach (var item in items) {
                 WorkItems.Add(item);
+            }
+
+            GroupedWorkItems.Clear();
+            foreach (var item in GroupedWorkItemEntryModel.GroupItems(items)) {
+                GroupedWorkItems.Add(item);
+            }
+        }
+
+        private ObservableCollection<GroupedWorkItemEntryModel> groupedWorkItems;
+
+        public ObservableCollection<GroupedWorkItemEntryModel> GroupedWorkItems {
+            get { return groupedWorkItems; }
+            set {
+                if (groupedWorkItems != value) {
+                    groupedWorkItems = value;
+                    RaisePropertyChanged();
+                }
             }
         }
 
