@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Knerd.Work.Time.Tracker.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,11 +18,14 @@ using Windows.UI.Xaml.Navigation;
 
 namespace Knerd.Work.Time.Tracker.Dialogs {
     public sealed partial class AddWorkItemEntryDialog : ContentDialog {
-        public AddWorkItemEntryDialog() {
+        public AddWorkItemEntryDialog(DateTimeOffset date) {
             this.InitializeComponent();
+            (this.DataContext as WorkItemEntryModel).Date = date;
         }
 
-        private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args) {
+        private async void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args) {
+            var connector = new SqliteConnector();
+            await connector.SaveWorkItemEntryAsync(this.DataContext as WorkItemEntryModel);
         }
 
         private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args) {

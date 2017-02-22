@@ -8,17 +8,40 @@
     xmlns:mt="using:MyToolkit.Paging"
     xmlns:vm="using:Knerd.Work.Time.Tracker.ViewModels"
     xmlns:helpers="using:Knerd.Work.Time.Tracker.Helpers"
+    xmlns:mtControls="using:MyToolkit.Controls"
     mc:Ignorable="d">
     <mt:MtPage.DataContext>
         <vm:OverviewViewModel />
     </mt:MtPage.DataContext>
     <mt:MtPage.BottomAppBar>
         <CommandBar>
-            <AppBarButton Icon="FourBars" x:Uid="Reporting"></AppBarButton>
             <AppBarButton Icon="Add" x:Uid="AddWorkTimeEntry" Command="{Binding AddNewWorkItemEntry}"></AppBarButton>
         </CommandBar>
     </mt:MtPage.BottomAppBar>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <CalendarView VerticalAlignment="Stretch" Margin="0" HorizontalAlignment="Stretch" SelectionMode="Single" FirstDayOfWeek="Monday" CalendarViewDayItemChanging="CalendarView_CalendarViewDayItemChanging" SelectedDatesChanged="CalendarView_SelectedDatesChanged"></CalendarView>
+        <Pivot>
+            <PivotItem x:Uid="OverviewPage_Calendar">
+                <CalendarView VerticalAlignment="Stretch" Margin="0" HorizontalAlignment="Stretch" SelectionMode="Single" FirstDayOfWeek="Monday" CalendarViewDayItemChanging="CalendarView_CalendarViewDayItemChanging" SelectedDatesChanged="CalendarView_SelectedDatesChanged"></CalendarView>
+            </PivotItem>
+            <PivotItem x:Uid="OverviewPage_Overview">
+                <mtControls:DataGrid ItemsSource="{Binding WorkItems}">
+                    <mtControls:DataGrid.Columns>
+                        <mtControls:DataGridTextColumn Width="*" x:Uid="OverviewPage_Overview_Date" Binding="{Binding Date}" />
+                        <mtControls:DataGridTextColumn Width="*" x:Uid="OverviewPage_Overview_BeginTime" Binding="{Binding BeginTime}" />
+                        <mtControls:DataGridTextColumn Width="*" x:Uid="OverviewPage_Overview_EndTime" Binding="{Binding EndTime}" />
+                        <mtControls:DataGridTextColumn Width="*" x:Uid="OverviewPage_Overview_WorkedTime" Binding="{Binding WorkedTime}" />
+                        <mtControls:DataGridTextColumn Width="*" x:Uid="OverviewPage_Overview_Call" Binding="{Binding Call}" />
+                        <mtControls:DataGridTextColumn Width="*"  x:Uid="OverviewPage_Overview_Customer" Binding="{Binding Customer}" />
+                    </mtControls:DataGrid.Columns>
+                    <mtControls:DataGrid.ItemDetailsTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding WorkDone}" />
+                        </DataTemplate>
+                    </mtControls:DataGrid.ItemDetailsTemplate>
+                </mtControls:DataGrid>
+            </PivotItem>
+            <PivotItem x:Uid="OverviewPage_Report">
+            </PivotItem>
+        </Pivot>
     </Grid>
 </mt:MtPage>

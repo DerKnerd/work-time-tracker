@@ -4,13 +4,45 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:Knerd.Work.Time.Tracker.Models"
     mc:Ignorable="d"
-    Title="TITLE"
-    PrimaryButtonText="Button1"
-    SecondaryButtonText="Button2"
+    Title=""
+    x:Uid="AddWorkItemEntryDialog"
+    PrimaryButtonText=""
+    SecondaryButtonText=""
     PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
     SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
-
-    <Grid>
-    </Grid>
+    <ContentDialog.DataContext>
+        <models:WorkItemEntryModel />
+    </ContentDialog.DataContext>
+    <ContentDialog.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="2.5" />
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Width" Value="242" />
+            <Setter Property="Margin" Value="2.5" />
+        </Style>
+        <Style TargetType="TimePicker">
+            <Setter Property="Margin" Value="2.5" />
+        </Style>
+    </ContentDialog.Resources>
+    <StackPanel Orientation="Vertical">
+        <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Vertical">
+                <TextBlock x:Uid="AddWorkItemEntryDialog_Call">Call</TextBlock>
+                <TextBox Text="{Binding Call, Mode=TwoWay}" />
+                <TextBlock x:Uid="AddWorkItemEntryDialog_Customer">Customer</TextBlock>
+                <TextBox Text="{Binding Customer, Mode=TwoWay}" />
+            </StackPanel>
+            <StackPanel Orientation="Vertical">
+                <TextBlock x:Uid="AddWorkItemEntryDialog_BeginTime">Begin Time</TextBlock>
+                <TimePicker Time="{Binding BeginTime, Mode=TwoWay}"></TimePicker>
+                <TextBlock x:Uid="AddWorkItemEntryDialog_EndTime">End Time</TextBlock>
+                <TimePicker Time="{Binding EndTime, Mode=TwoWay}"></TimePicker>
+            </StackPanel>
+        </StackPanel>
+        <TextBlock x:Uid="AddWorkItemEntryDialog_WorkDone">Done work</TextBlock>
+        <TextBox Text="{Binding WorkDone, Mode=TwoWay}" Width="Auto" Height="90" AcceptsReturn="True"></TextBox>
+    </StackPanel>
 </ContentDialog>

@@ -103,6 +103,9 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\SqliteConnector.cs" />
+    <Compile Include="Models\SqlReaderHelpers.cs" />
+    <Compile Include="Models\WorkItemEntryModel.cs" />
     <Compile Include="Pages\OverviewPage.xaml.cs">
       <DependentUpon>OverviewPage.xaml</DependentUpon>
     </Compile>

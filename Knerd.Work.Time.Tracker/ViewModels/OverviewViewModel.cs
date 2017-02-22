@@ -1,8 +1,11 @@
 ﻿using Knerd.Work.Time.Tracker.Dialogs;
+using Knerd.Work.Time.Tracker.Models;
 using MyToolkit.Command;
 using MyToolkit.Model;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace Knerd.Work.Time.Tracker.ViewModels {
 
@@ -10,11 +13,26 @@ namespace Knerd.Work.Time.Tracker.ViewModels {
 
         public OverviewViewModel() {
             AddNewWorkItemEntry = new RelayCommand(async () => {
-                var diag = new AddWorkItemEntryDialog();
+                var diag = new AddWorkItemEntryDialog(SelectedDate.GetValueOrDefault());
                 await diag.ShowAsync();
+                await ReloadWorkItems();
             });
+            WorkItems = new ObservableCollection<Models.WorkItemEntryModel>();
         }
 
+        protected override async void RaisePropertyChanged(PropertyChangedEventArgs args) {
+            base.RaisePropertyChanged(args);
+            if (args.IsProperty<OverviewViewModel>(s => s.SelectedDate)) {
+                await ReloadWorkItems();
+            }
+        }
+
+        private async Task ReloadWorkItems() {
+            WorkItems.Clear();
+            foreach (var item in await new SqliteConnector().GetWorkItems(SelectedDate.Value)) {
+                WorkItems.Add(item);
+            }
+        }
 
         private DateTimeOffset? selectedDate;
 
@@ -40,93 +58,13 @@ namespace Knerd.Work.Time.Tracker.ViewModels {
             }
         }
 
-        private ObservableCollection<WorkItemEntryViewModel> workItems;
+        private ObservableCollection<WorkItemEntryModel> workItems;
 
-        public ObservableCollection<WorkItemEntryViewModel> WorkItems {
+        public ObservableCollection<WorkItemEntryModel> WorkItems {
             get { return workItems; }
             set {
                 if (workItems != value) {
                     workItems = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    }
-
-    public class WorkItemEntryViewModel : ObservableObject {
-        private DateTime beginTime;
-        private string customer;
-        private DateTime date;
-        private DateTime endTime;
-        private string task;
-        private string tfsCall;
-
-        private DateTime timeWorked;
-
-        public DateTime BeginTime {
-            get { return beginTime; }
-            set {
-                if (beginTime != value) {
-                    beginTime = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
-        public string Customer {
-            get { return customer; }
-            set {
-                if (customer != value) {
-                    customer = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
-        public DateTime Date {
-            get { return date; }
-            set {
-                if (date != value) {
-                    date = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
-        public DateTime EndTime {
-            get { return endTime; }
-            set {
-                if (endTime != value) {
-                    endTime = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
-        public string Task {
-            get { return task; }
-            set {
-                if (task != value) {
-                    task = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
-        public string TfsCall {
-            get { return tfsCall; }
-            set {
-                if (tfsCall != value) {
-                    tfsCall = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-        public DateTime TimeWorked {
-            get { return timeWorked; }
-            set {
-                if (timeWorked != value) {
-                    timeWorked = value;
                     RaisePropertyChanged();
                 }
             }

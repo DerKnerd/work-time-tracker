@@ -1,6 +1,7 @@
 ﻿{
   "dependencies": {
     "FontAwesome.UWP": "4.7.0.9",
+    "Microsoft.Data.SQLite": "1.1.0",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
     "MyToolkit.Extended": "2.5.16",
     "WinRTXamlToolkit.Controls.DataVisualization": "2.3.0"
