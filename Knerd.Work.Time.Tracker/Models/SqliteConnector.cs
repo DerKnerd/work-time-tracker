@@ -47,6 +47,32 @@ namespace Knerd.Work.Time.Tracker.Models {
             return items;
         }
 
+        public async Task<IEnumerable<WorkItemEntryModel>> GetWorkItemsForMonth(DateTimeOffset date) {
+            await CreateIfNotExists();
+            var items = new List<WorkItemEntryModel>();
+            using (var connection = await OpenConnectionAsync()) {
+                await connection.OpenAsync();
+                var firstDay = new DateTime(date.Year, date.Month, 1);
+                var lastDay = firstDay.AddMonths(1).AddDays(-1).AddHours(23);
+                using (var cmd = new SqliteCommand($"SELECT BeginTime, EndTime, Date, Call, Customer, WorkDone FROM {WorkItemTable} WHERE Date BETWEEN @firstday AND @lastday ORDER BY Date DESC", connection)) {
+                    cmd.Parameters.AddWithValue("@lastday", lastDay);
+                    cmd.Parameters.AddWithValue("@firstday", firstDay);
+                    var reader = await cmd.ExecuteReaderAsync();
+                    while (await reader.ReadAsync()) {
+                        items.Add(new WorkItemEntryModel {
+                            BeginTime = reader.GetTimeSpan("BeginTime"),
+                            EndTime = reader.GetTimeSpan("EndTime"),
+                            Date = reader.GetDateTime("Date"),
+                            Call = reader.GetString("Call"),
+                            Customer = reader.GetString("Customer"),
+                            WorkDone = reader.GetString("WorkDone")
+                        });
+                    }
+                }
+            }
+            return items;
+        }
+
         private async Task<SqliteConnection> OpenConnectionAsync() {
             var connectionStringBuilder = new SqliteConnectionStringBuilder {
                 DataSource = "workitems.db",

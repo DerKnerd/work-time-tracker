@@ -153,6 +153,12 @@
   <data name="OverviewPage_Daily_Report_Chart.Title" xml:space="preserve">
     <value>Gearbeitete Zeit</value>
   </data>
+  <data name="OverviewPage_Monthly_Report.Header" xml:space="preserve">
+    <value>Monats Auswertung</value>
+  </data>
+  <data name="OverviewPage_Monthly_Report_Chart.Title" xml:space="preserve">
+    <value>Gearbeitete Zeit</value>
+  </data>
   <data name="OverviewPage_Overview.Header" xml:space="preserve">
     <value>Übersicht</value>
   </data>

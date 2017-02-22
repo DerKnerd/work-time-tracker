@@ -1,4 +1,5 @@
-﻿using MyToolkit.Model;
+﻿using MyToolkit.Command;
+using MyToolkit.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,17 @@ namespace Knerd.Work.Time.Tracker.Models {
 
     public class GroupedWorkItemEntryModel : ObservableObject {
 
-        public static IEnumerable<GroupedWorkItemEntryModel> GroupItems(IEnumerable<WorkItemEntryModel> items) {
+        public static IEnumerable<GroupedWorkItemEntryModel> GroupItemsDaily(IEnumerable<WorkItemEntryModel> items) {
+            var groupedByCustomer = items.GroupBy(k => k.Call);
+            foreach (var item in groupedByCustomer) {
+                var workedTime = item.First().WorkedTime;
+                foreach (var timeItem in item.Skip(1)) {
+                    workedTime += timeItem.WorkedTime;
+                }
+                yield return new GroupedWorkItemEntryModel { CustomerCall = item.First().Customer + Environment.NewLine + item.Key, WorkedTime = workedTime.TotalHours };
+            }
+        }
+        public static IEnumerable<GroupedWorkItemEntryModel> GroupItemsMonthly(IEnumerable<WorkItemEntryModel> items) {
             var groupedByCustomer = items.GroupBy(k => k.Call);
             foreach (var item in groupedByCustomer) {
                 var workedTime = item.First().WorkedTime;
@@ -45,6 +56,23 @@ namespace Knerd.Work.Time.Tracker.Models {
     public class WorkItemEntryModel : ObservableObject {
 
         public WorkItemEntryModel() {
+            Save = new RelayCommand(async () => {
+                var connector = new SqliteConnector();
+                await connector.SaveWorkItemEntryAsync(this);
+            }, () => !string.IsNullOrEmpty(call) && !string.IsNullOrEmpty(customer) && !string.IsNullOrEmpty(workDone));
+        }
+
+
+        private RelayCommand save;
+
+        public RelayCommand Save {
+            get { return save; }
+            set {
+                if (save != value) {
+                    save = value;
+                    RaisePropertyChanged();
+                }
+            }
         }
 
         private TimeSpan beginTime = DateTime.Now - DateTime.Now.Date;

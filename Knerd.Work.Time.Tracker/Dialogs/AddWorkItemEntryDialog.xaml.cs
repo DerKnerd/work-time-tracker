@@ -22,13 +22,17 @@ namespace Knerd.Work.Time.Tracker.Dialogs {
             this.InitializeComponent();
             (this.DataContext as WorkItemEntryModel).Date = date;
         }
-
-        private async void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args) {
-            var connector = new SqliteConnector();
-            await connector.SaveWorkItemEntryAsync(this.DataContext as WorkItemEntryModel);
+        
+        private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args) {
         }
 
-        private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args) {
+        private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args) {
+            var entry = (this.DataContext as WorkItemEntryModel);
+            if (entry.Save.CanExecute) {
+                entry.Save.TryExecute();
+            } else {
+                args.Cancel = true;
+            }
         }
     }
 }

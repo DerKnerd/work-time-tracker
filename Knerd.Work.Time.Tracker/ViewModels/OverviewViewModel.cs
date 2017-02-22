@@ -11,6 +11,16 @@ namespace Knerd.Work.Time.Tracker.ViewModels {
 
     public class OverviewViewModel : ObservableObject {
 
+        private RelayCommand addNewWorkItemEntry;
+
+        private ObservableCollection<GroupedWorkItemEntryModel> dailyGroupedWorkItems;
+
+        private ObservableCollection<GroupedWorkItemEntryModel> monthlyGroupedWorkItems;
+
+        private DateTimeOffset? selectedDate;
+
+        private ObservableCollection<WorkItemEntryModel> workItems;
+
         public OverviewViewModel() {
             AddNewWorkItemEntry = new RelayCommand(async () => {
                 var diag = new AddWorkItemEntryDialog(SelectedDate.GetValueOrDefault());
@@ -18,8 +28,59 @@ namespace Knerd.Work.Time.Tracker.ViewModels {
                 await ReloadWorkItems();
             });
             WorkItems = new ObservableCollection<Models.WorkItemEntryModel>();
-            GroupedWorkItems = new ObservableCollection<Models.GroupedWorkItemEntryModel>();
+            DailyGroupedWorkItems = new ObservableCollection<Models.GroupedWorkItemEntryModel>();
+            MonthlyGroupedWorkItems = new ObservableCollection<Models.GroupedWorkItemEntryModel>();
             SelectedDate = DateTime.Now;
+        }
+
+        public RelayCommand AddNewWorkItemEntry {
+            get { return addNewWorkItemEntry; }
+            set {
+                if (addNewWorkItemEntry != value) {
+                    addNewWorkItemEntry = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        public ObservableCollection<GroupedWorkItemEntryModel> DailyGroupedWorkItems {
+            get { return dailyGroupedWorkItems; }
+            set {
+                if (dailyGroupedWorkItems != value) {
+                    dailyGroupedWorkItems = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        public ObservableCollection<GroupedWorkItemEntryModel> MonthlyGroupedWorkItems {
+            get { return monthlyGroupedWorkItems; }
+            set {
+                if (monthlyGroupedWorkItems != value) {
+                    monthlyGroupedWorkItems = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        public DateTimeOffset? SelectedDate {
+            get { return selectedDate; }
+            set {
+                if (selectedDate != value) {
+                    selectedDate = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        public ObservableCollection<WorkItemEntryModel> WorkItems {
+            get { return workItems; }
+            set {
+                if (workItems != value) {
+                    workItems = value;
+                    RaisePropertyChanged();
+                }
+            }
         }
 
         protected override async void RaisePropertyChanged(PropertyChangedEventArgs args) {
@@ -36,57 +97,14 @@ namespace Knerd.Work.Time.Tracker.ViewModels {
                 WorkItems.Add(item);
             }
 
-            GroupedWorkItems.Clear();
-            foreach (var item in GroupedWorkItemEntryModel.GroupItems(items)) {
-                GroupedWorkItems.Add(item);
+            DailyGroupedWorkItems.Clear();
+            foreach (var item in GroupedWorkItemEntryModel.GroupItemsDaily(items)) {
+                DailyGroupedWorkItems.Add(item);
             }
-        }
 
-        private ObservableCollection<GroupedWorkItemEntryModel> groupedWorkItems;
-
-        public ObservableCollection<GroupedWorkItemEntryModel> GroupedWorkItems {
-            get { return groupedWorkItems; }
-            set {
-                if (groupedWorkItems != value) {
-                    groupedWorkItems = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
-        private DateTimeOffset? selectedDate;
-
-        public DateTimeOffset? SelectedDate {
-            get { return selectedDate; }
-            set {
-                if (selectedDate != value) {
-                    selectedDate = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
-        private RelayCommand addNewWorkItemEntry;
-
-        public RelayCommand AddNewWorkItemEntry {
-            get { return addNewWorkItemEntry; }
-            set {
-                if (addNewWorkItemEntry != value) {
-                    addNewWorkItemEntry = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
-        private ObservableCollection<WorkItemEntryModel> workItems;
-
-        public ObservableCollection<WorkItemEntryModel> WorkItems {
-            get { return workItems; }
-            set {
-                if (workItems != value) {
-                    workItems = value;
-                    RaisePropertyChanged();
-                }
+            MonthlyGroupedWorkItems.Clear();
+            foreach (var item in GroupedWorkItemEntryModel.GroupItemsMonthly(await new SqliteConnector().GetWorkItemsForMonth(SelectedDate.Value))) {
+                MonthlyGroupedWorkItems.Add(item);
             }
         }
     }

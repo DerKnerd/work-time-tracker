@@ -31,7 +31,7 @@
                     <mtControls:DataGridTextColumn Width="*" x:Uid="OverviewPage_Overview_EndTime" Binding="{Binding EndTime}" />
                     <mtControls:DataGridTextColumn Width="*" x:Uid="OverviewPage_Overview_WorkedTime" Binding="{Binding WorkedTime}" />
                     <mtControls:DataGridTextColumn Width="*" x:Uid="OverviewPage_Overview_Call" Binding="{Binding Call}" />
-                    <mtControls:DataGridTextColumn Width="*"  x:Uid="OverviewPage_Overview_Customer" Binding="{Binding Customer}" />
+                    <mtControls:DataGridTextColumn Width="*" x:Uid="OverviewPage_Overview_Customer" Binding="{Binding Customer}" />
                 </mtControls:DataGrid.Columns>
                 <mtControls:DataGrid.ItemDetailsTemplate>
                     <DataTemplate>
@@ -40,11 +40,21 @@
                 </mtControls:DataGrid.ItemDetailsTemplate>
             </mtControls:DataGrid>
         </PivotItem>
-        <PivotItem x:Uid="OverviewPage_Report">
+        <PivotItem x:Uid="OverviewPage_Daily_Report">
             <charting:Chart>
                 <charting:BubbleSeries
-                    x:Uid="OverviewPage_Report_Chart"
-                    ItemsSource="{Binding GroupedWorkItems}"
+                    x:Uid="OverviewPage_Daily_Report_Chart"
+                    ItemsSource="{Binding DailyGroupedWorkItems}"
+                    IndependentValueBinding="{Binding CustomerCall}"
+                    DependentValueBinding="{Binding WorkedTime}">
+                </charting:BubbleSeries>
+            </charting:Chart>
+        </PivotItem>
+        <PivotItem x:Uid="OverviewPage_Monthly_Report">
+            <charting:Chart>
+                <charting:BubbleSeries
+                    x:Uid="OverviewPage_Monthly_Report_Chart"
+                    ItemsSource="{Binding MonthlyGroupedWorkItems}"
                     IndependentValueBinding="{Binding CustomerCall}"
                     DependentValueBinding="{Binding WorkedTime}">
                 </charting:BubbleSeries>
