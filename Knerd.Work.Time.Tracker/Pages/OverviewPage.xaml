@@ -21,6 +21,8 @@
   <mt:MtPage.BottomAppBar>
     <CommandBar>
       <AppBarButton Icon="Add" x:Uid="AddWorkTimeEntry" Command="{Binding AddNewWorkItemEntry}"/>
+      <AppBarSeparator />
+      <AppBarButton Icon="Edit" x:Uid="EditWorkTimeEntry" />
     </CommandBar>
   </mt:MtPage.BottomAppBar>
   <Pivot>
@@ -50,7 +52,7 @@
                     x:Uid="OverviewPage_Daily_Report_Chart"
                     ItemsSource="{Binding DailyGroupedWorkItems}"
                     IndependentValueBinding="{Binding CustomerCall}"
-                    DependentValueBinding="{Binding WorkedTime}"/>
+                    DependentValueBinding="{Binding WorkedTime}" />
       </charting:Chart>
     </PivotItem>
     <PivotItem x:Uid="OverviewPage_Monthly_Report">

@@ -15,7 +15,7 @@ namespace Knerd.Work.Time.Tracker.Models {
                 foreach (var timeItem in item.Skip(1)) {
                     workedTime += timeItem.WorkedTime;
                 }
-                yield return new GroupedWorkItemEntryModel { CustomerCall = item.First().Customer + Environment.NewLine + item.Key, WorkedTime = workedTime.TotalHours };
+                yield return new GroupedWorkItemEntryModel { CustomerCall = item.Key.Customer + Environment.NewLine + item.Key.Call, WorkedTime = workedTime.TotalHours };
             }
         }
         public static IEnumerable<GroupedWorkItemEntryModel> GroupItemsMonthly(IEnumerable<WorkItemEntryModel> items) {
@@ -25,7 +25,7 @@ namespace Knerd.Work.Time.Tracker.Models {
                 foreach (var timeItem in item.Skip(1)) {
                     workedTime += timeItem.WorkedTime;
                 }
-                yield return new GroupedWorkItemEntryModel { CustomerCall = item.First().Customer + Environment.NewLine + item.Key, WorkedTime = workedTime.TotalHours };
+                yield return new GroupedWorkItemEntryModel { CustomerCall = item.Key.Customer + Environment.NewLine + item.Key.Call, WorkedTime = workedTime.TotalHours };
             }
         }
         private double workedTime;

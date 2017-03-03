@@ -96,7 +96,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Converter\FormatConverter.cs" />
     <Compile Include="Dialogs\AddWorkItemEntryDialog.xaml.cs">
       <DependentUpon>AddWorkItemEntryDialog.xaml</DependentUpon>
     </Compile>
