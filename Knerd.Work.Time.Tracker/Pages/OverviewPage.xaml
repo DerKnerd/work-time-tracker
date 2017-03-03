@@ -46,7 +46,7 @@
     </PivotItem>
     <PivotItem x:Uid="OverviewPage_Daily_Report">
       <charting:Chart>
-        <charting:BubbleSeries
+        <charting:ColumnSeries
                     x:Uid="OverviewPage_Daily_Report_Chart"
                     ItemsSource="{Binding DailyGroupedWorkItems}"
                     IndependentValueBinding="{Binding CustomerCall}"
@@ -55,7 +55,7 @@
     </PivotItem>
     <PivotItem x:Uid="OverviewPage_Monthly_Report">
       <charting:Chart>
-        <charting:BubbleSeries
+        <charting:ColumnSeries
                     x:Uid="OverviewPage_Monthly_Report_Chart"
                     ItemsSource="{Binding MonthlyGroupedWorkItems}"
                     IndependentValueBinding="{Binding CustomerCall}"

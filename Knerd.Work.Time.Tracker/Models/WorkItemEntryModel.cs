@@ -9,7 +9,7 @@ namespace Knerd.Work.Time.Tracker.Models {
     public class GroupedWorkItemEntryModel : ObservableObject {
 
         public static IEnumerable<GroupedWorkItemEntryModel> GroupItemsDaily(IEnumerable<WorkItemEntryModel> items) {
-            var groupedByCustomer = items.GroupBy(k => k.Call);
+            var groupedByCustomer = items.GroupBy(g => new { g.Customer, g.Call });
             foreach (var item in groupedByCustomer) {
                 var workedTime = item.First().WorkedTime;
                 foreach (var timeItem in item.Skip(1)) {
@@ -19,7 +19,7 @@ namespace Knerd.Work.Time.Tracker.Models {
             }
         }
         public static IEnumerable<GroupedWorkItemEntryModel> GroupItemsMonthly(IEnumerable<WorkItemEntryModel> items) {
-            var groupedByCustomer = items.GroupBy(k => k.Call);
+            var groupedByCustomer = items.GroupBy(g => new { g.Customer, g.Call });
             foreach (var item in groupedByCustomer) {
                 var workedTime = item.First().WorkedTime;
                 foreach (var timeItem in item.Skip(1)) {
