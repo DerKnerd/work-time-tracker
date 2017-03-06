@@ -73,7 +73,7 @@ namespace Knerd.Work.Time.Tracker.Models {
 
         private TimeSpan endTime = DateTime.Now - DateTime.Now.Date;
 
-        private int? id;
+        private long? id;
 
         private RelayCommand save;
         
@@ -158,7 +158,7 @@ namespace Knerd.Work.Time.Tracker.Models {
             }
         }
 
-        public int? Id
+        public long? Id
         {
             get { return id; }
             set

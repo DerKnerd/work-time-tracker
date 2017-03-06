@@ -10,7 +10,10 @@ namespace Knerd.Work.Time.Tracker.Models {
     public class SqliteConnector {
 
         private readonly string WorkItemTable = "WorkItems";
-        public async Task<int> CreateWorkItemEntryAsync(WorkItemEntryModel model) {
+
+        public static event Action AfterEdit;
+
+        public async Task<long> CreateWorkItemEntryAsync(WorkItemEntryModel model) {
             await CreateIfNotExists();
             var query = $"INSERT INTO {WorkItemTable} (BeginTime, EndTime, Date, Call, Customer, WorkDone) VALUES (@beginTime, @endTime, @date, @call, @customer, @workDone)";
             var parameters = new List<SqliteParameter> {
@@ -22,7 +25,8 @@ namespace Knerd.Work.Time.Tracker.Models {
                 new SqliteParameter("@workDone", model.WorkDone)
             };
             await ExecuteAsync(query, parameters);
-            return await ExecuteScalarAsync<int>($"SELECT Id FROM {WorkItemTable} ORDER BY Id DESC LIMIT 1");
+            AfterEdit?.Invoke();
+            return await ExecuteScalarAsync<long>($"SELECT Id FROM {WorkItemTable} ORDER BY Id DESC LIMIT 1");
         }
 
         public async Task UpdateWorkItemEntryAsync(WorkItemEntryModel model)
@@ -38,6 +42,7 @@ namespace Knerd.Work.Time.Tracker.Models {
                 new SqliteParameter("@customer", model.Customer),
                 new SqliteParameter("@workDone", model.WorkDone)
             };
+            AfterEdit?.Invoke();
             await ExecuteAsync(query, parameters);
         }
 
