@@ -20,9 +20,9 @@
   </mt:MtPage.DataContext>
   <mt:MtPage.BottomAppBar>
     <CommandBar>
-      <AppBarButton Icon="Add" x:Uid="AddWorkTimeEntry" Command="{Binding AddNewWorkItemEntry}"/>
+      <AppBarButton Icon="Add" x:Uid="AddWorkItemEntry" Command="{Binding AddNewWorkItemEntry}"/>
       <AppBarSeparator />
-      <AppBarButton Icon="Edit" x:Uid="EditWorkTimeEntry" />
+      <AppBarButton Icon="Edit" x:Uid="EditWorkItemEntry" Command="{Binding EditWorkItemEntry}" />
     </CommandBar>
   </mt:MtPage.BottomAppBar>
   <Pivot>
@@ -30,7 +30,7 @@
       <CalendarView VerticalAlignment="Stretch" Margin="0" HorizontalAlignment="Stretch" SelectionMode="Single" FirstDayOfWeek="Monday" CalendarViewDayItemChanging="CalendarView_CalendarViewDayItemChanging" SelectedDatesChanged="CalendarView_SelectedDatesChanged"/>
     </PivotItem>
     <PivotItem x:Uid="OverviewPage_Overview">
-      <mtControls:DataGrid ItemsSource="{Binding WorkItems}">
+      <mtControls:DataGrid ItemsSource="{Binding WorkItems}" SelectionChanged="DataGrid_SelectionChanged">
         <mtControls:DataGrid.Columns>
           <mtControls:DataGridTextColumn Width="*" x:Uid="OverviewPage_Overview_Date" Binding="{Binding Date, ConverterParameter=\{0:dd.MM.yyyy\}, Converter={StaticResource StringFormatConverter}}" />
           <mtControls:DataGridTextColumn Width="*" x:Uid="OverviewPage_Overview_BeginTime" Binding="{Binding BeginTime}" />

@@ -7,103 +7,158 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
 
-namespace Knerd.Work.Time.Tracker.ViewModels {
-
-    public class OverviewViewModel : ObservableObject {
-
+namespace Knerd.Work.Time.Tracker.ViewModels
+{
+    public class OverviewViewModel : ObservableObject
+    {
         private RelayCommand addNewWorkItemEntry;
 
         private ObservableCollection<GroupedWorkItemEntryModel> dailyGroupedWorkItems;
 
+        private RelayCommand editWorkItemEntry;
         private ObservableCollection<GroupedWorkItemEntryModel> monthlyGroupedWorkItems;
 
         private DateTimeOffset? selectedDate;
 
+        private WorkItemEntryModel selectedWorkItem;
         private ObservableCollection<WorkItemEntryModel> workItems;
 
-        public OverviewViewModel() {
-            AddNewWorkItemEntry = new RelayCommand(async () => {
+        public OverviewViewModel()
+        {
+            AddNewWorkItemEntry = new RelayCommand(async () =>
+            {
                 var diag = new AddWorkItemEntryDialog(SelectedDate.GetValueOrDefault());
                 await diag.ShowAsync();
                 await ReloadWorkItems();
             });
+            EditWorkItemEntry = new RelayCommand(async () =>
+            {
+                var diag = new EditWorkItemEntryDialog(SelectedWorkItem);
+                await diag.ShowAsync();
+                await ReloadWorkItems();
+            }, () => SelectedWorkItem != null);
             WorkItems = new ObservableCollection<Models.WorkItemEntryModel>();
             DailyGroupedWorkItems = new ObservableCollection<Models.GroupedWorkItemEntryModel>();
             MonthlyGroupedWorkItems = new ObservableCollection<Models.GroupedWorkItemEntryModel>();
             SelectedDate = DateTime.Now;
         }
-
-        public RelayCommand AddNewWorkItemEntry {
+        public RelayCommand AddNewWorkItemEntry
+        {
             get { return addNewWorkItemEntry; }
-            set {
-                if (addNewWorkItemEntry != value) {
+            set
+            {
+                if (addNewWorkItemEntry != value)
+                {
                     addNewWorkItemEntry = value;
                     RaisePropertyChanged();
                 }
             }
         }
 
-        public ObservableCollection<GroupedWorkItemEntryModel> DailyGroupedWorkItems {
+        public ObservableCollection<GroupedWorkItemEntryModel> DailyGroupedWorkItems
+        {
             get { return dailyGroupedWorkItems; }
-            set {
-                if (dailyGroupedWorkItems != value) {
+            set
+            {
+                if (dailyGroupedWorkItems != value)
+                {
                     dailyGroupedWorkItems = value;
                     RaisePropertyChanged();
                 }
             }
         }
 
-        public ObservableCollection<GroupedWorkItemEntryModel> MonthlyGroupedWorkItems {
+        public RelayCommand EditWorkItemEntry
+        {
+            get { return editWorkItemEntry; }
+            set
+            {
+                if (editWorkItemEntry != value)
+                {
+                    editWorkItemEntry = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        public ObservableCollection<GroupedWorkItemEntryModel> MonthlyGroupedWorkItems
+        {
             get { return monthlyGroupedWorkItems; }
-            set {
-                if (monthlyGroupedWorkItems != value) {
+            set
+            {
+                if (monthlyGroupedWorkItems != value)
+                {
                     monthlyGroupedWorkItems = value;
                     RaisePropertyChanged();
                 }
             }
         }
 
-        public DateTimeOffset? SelectedDate {
+        public DateTimeOffset? SelectedDate
+        {
             get { return selectedDate; }
-            set {
-                if (selectedDate != value) {
+            set
+            {
+                if (selectedDate != value)
+                {
                     selectedDate = value;
                     RaisePropertyChanged();
                 }
             }
         }
 
-        public ObservableCollection<WorkItemEntryModel> WorkItems {
+        public WorkItemEntryModel SelectedWorkItem
+        {
+            get { return selectedWorkItem; }
+            set
+            {
+                if (selectedWorkItem != value)
+                {
+                    selectedWorkItem = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+        public ObservableCollection<WorkItemEntryModel> WorkItems
+        {
             get { return workItems; }
-            set {
-                if (workItems != value) {
+            set
+            {
+                if (workItems != value)
+                {
                     workItems = value;
                     RaisePropertyChanged();
                 }
             }
         }
 
-        protected override async void RaisePropertyChanged(PropertyChangedEventArgs args) {
+        protected override async void RaisePropertyChanged(PropertyChangedEventArgs args)
+        {
             base.RaisePropertyChanged(args);
-            if (args.IsProperty<OverviewViewModel>(s => s.SelectedDate)) {
+            if (args.IsProperty<OverviewViewModel>(s => s.SelectedDate))
+            {
                 await ReloadWorkItems();
             }
         }
 
-        private async Task ReloadWorkItems() {
+        private async Task ReloadWorkItems()
+        {
             var items = await new SqliteConnector().GetWorkItems(SelectedDate.Value);
             WorkItems.Clear();
-            foreach (var item in items) {
+            foreach (var item in items)
+            {
                 WorkItems.Add(item);
             }
 
             DailyGroupedWorkItems.Clear();
-            foreach (var item in GroupedWorkItemEntryModel.GroupItemsDaily(items)) {
+            foreach (var item in GroupedWorkItemEntryModel.GroupItemsDaily(items))
+            {
                 DailyGroupedWorkItems.Add(item);
             }
 
             MonthlyGroupedWorkItems.Clear();
-            foreach (var item in GroupedWorkItemEntryModel.GroupItemsMonthly(await new SqliteConnector().GetWorkItemsForMonth(SelectedDate.Value))) {
+            foreach (var item in GroupedWorkItemEntryModel.GroupItemsMonthly(await new SqliteConnector().GetWorkItemsForMonth(SelectedDate.Value)))
+            {
                 MonthlyGroupedWorkItems.Add(item);
             }
         }

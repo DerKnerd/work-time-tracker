@@ -1,4 +1,5 @@
-﻿using Knerd.Work.Time.Tracker.ViewModels;
+﻿using Knerd.Work.Time.Tracker.Models;
+using Knerd.Work.Time.Tracker.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,22 +17,33 @@ using Windows.UI.Xaml.Navigation;
 
 // Die Elementvorlage "Leere Seite" ist unter http://go.microsoft.com/fwlink/?LinkId=234238 dokumentiert.
 
-namespace Knerd.Work.Time.Tracker.Pages {
+namespace Knerd.Work.Time.Tracker.Pages
+{
     /// <summary>
     /// Eine leere Seite, die eigenständig verwendet oder zu der innerhalb eines Rahmens navigiert werden kann.
     /// </summary>
-    public sealed partial class OverviewPage {
-        public OverviewPage() {
+    public sealed partial class OverviewPage
+    {
+        public OverviewPage()
+        {
             this.InitializeComponent();
         }
 
-        private void CalendarView_CalendarViewDayItemChanging(CalendarView sender, CalendarViewDayItemChangingEventArgs args) {
+        private void CalendarView_CalendarViewDayItemChanging(CalendarView sender, CalendarViewDayItemChangingEventArgs args)
+        {
         }
 
-        private void CalendarView_SelectedDatesChanged(CalendarView sender, CalendarViewSelectedDatesChangedEventArgs args) {
-            if (args.AddedDates.Count() > 0) {
+        private void CalendarView_SelectedDatesChanged(CalendarView sender, CalendarViewSelectedDatesChangedEventArgs args)
+        {
+            if (args.AddedDates.Count() > 0)
+            {
                 (this.DataContext as OverviewViewModel).SelectedDate = args.AddedDates.First();
             }
+        }
+
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            (this.DataContext as OverviewViewModel).SelectedWorkItem = e.AddedItems.FirstOrDefault() as WorkItemEntryModel;
         }
     }
 }

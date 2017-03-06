@@ -99,6 +99,9 @@
     <Compile Include="Dialogs\AddWorkItemEntryDialog.xaml.cs">
       <DependentUpon>AddWorkItemEntryDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\EditWorkItemEntryDialog.xaml.cs">
+      <DependentUpon>EditWorkItemEntryDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\CalenderViewHelper.cs" />
     <Compile Include="Models\SqliteConnector.cs" />
     <Compile Include="Models\SqlReaderHelpers.cs" />
@@ -131,6 +134,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="Dialogs\AddWorkItemEntryDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\EditWorkItemEntryDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
