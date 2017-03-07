@@ -56,6 +56,7 @@ namespace Knerd.Work.Time.Tracker.Models {
                     var reader = await cmd.ExecuteReaderAsync();
                     while (await reader.ReadAsync()) {
                         items.Add(new WorkItemEntryModel {
+                            Id = reader.GetInt32(0),
                             BeginTime = reader.GetTimeSpan("BeginTime"),
                             EndTime = reader.GetTimeSpan("EndTime"),
                             Date = reader.GetDateTime("Date"),

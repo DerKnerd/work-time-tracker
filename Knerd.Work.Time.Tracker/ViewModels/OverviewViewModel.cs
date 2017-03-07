@@ -36,9 +36,6 @@ namespace Knerd.Work.Time.Tracker.ViewModels
                 var diag = new EditWorkItemEntryDialog(SelectedWorkItem);
                 await diag.ShowAsync();
                 await ReloadWorkItems();
-            }, () =>
-            {
-                return SelectedWorkItem != null;
             });
             WorkItems = new ObservableCollection<Models.WorkItemEntryModel>();
             DailyGroupedWorkItems = new ObservableCollection<Models.GroupedWorkItemEntryModel>();

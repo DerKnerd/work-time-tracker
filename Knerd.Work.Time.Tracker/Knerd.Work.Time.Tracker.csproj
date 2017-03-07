@@ -96,6 +96,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converter\NullToBooleanConverter.cs" />
     <Compile Include="Dialogs\AddWorkItemEntryDialog.xaml.cs">
       <DependentUpon>AddWorkItemEntryDialog.xaml</DependentUpon>
     </Compile>
